@@ -18,19 +18,19 @@ namespace hw2 {
 
         explicit LinkedList(typename NodeWrapper<T>::iterator &);
 
-        typename NodeWrapper<T>::iterator &begin();
+        typename NodeWrapper<T>::iterator begin();
 
-        typename NodeWrapper<T>::iterator &end();
+        typename NodeWrapper<T>::iterator end();
 
-        typename NodeWrapper<T>::iterator &insert(typename NodeWrapper<T>::iterator &, T);
+        typename NodeWrapper<T>::iterator insert(typename NodeWrapper<T>::const_iterator, T &&);
 
-        typename NodeWrapper<T>::iterator &erase(typename NodeWrapper<T>::iterator &);
+        typename NodeWrapper<T>::iterator erase(typename NodeWrapper<T>::const_iterator);
 
         bool empty();
 
         void printList();
 
-        void printList(typename NodeWrapper<T>::iterator &);
+        void printList(typename NodeWrapper<T>::const_iterator, typename NodeWrapper<T>::const_iterator);
     };
 
     template<typename T>
@@ -40,24 +40,24 @@ namespace hw2 {
     LinkedList<T>::LinkedList(typename NodeWrapper<T>::iterator &it): first(it) {}
 
     template<typename T>
-    typename NodeWrapper<T>::iterator &LinkedList<T>::begin() {
+    typename NodeWrapper<T>::iterator LinkedList<T>::begin() {
         return *(new NodeWrapper<T>(first->ptr()));
     }
 
     template<typename T>
-    typename NodeWrapper<T>::iterator &LinkedList<T>::end() {
+    typename NodeWrapper<T>::iterator LinkedList<T>::end() {
         return *(new NodeWrapper<T>());
     }
 
     template<typename T>
-    typename NodeWrapper<T>::iterator &LinkedList<T>::insert(typename NodeWrapper<T>::iterator &wrapper, T data) {
+    typename NodeWrapper<T>::iterator LinkedList<T>::insert(typename NodeWrapper<T>::const_iterator wrapper, T &&data) {
         if (empty()) return first = *(new NodeWrapper<T>(new ListNode<T>(data)));
         if (first == wrapper) return first = *(new NodeWrapper<T>(begin()->insert(data)));
         return *(new NodeWrapper<T>(begin()->insert(data)));
     }
 
     template<typename T>
-    typename NodeWrapper<T>::iterator &LinkedList<T>::erase(typename NodeWrapper<T>::iterator &wrapper) {
+    typename NodeWrapper<T>::iterator LinkedList<T>::erase(typename NodeWrapper<T>::const_iterator wrapper) {
         if (first == wrapper) return first = *(new NodeWrapper<T>(wrapper->erase(first->ptr())));
         return *(new NodeWrapper<T>(wrapper->erase(first->ptr())));
     }
@@ -69,12 +69,13 @@ namespace hw2 {
 
     template<typename T>
     void LinkedList<T>::printList() {
-        printList(begin());
+        printList(begin(), end());
     }
 
     template<typename T>
-    void LinkedList<T>::printList(typename NodeWrapper<T>::iterator &first) {
-        for (auto it = first; it != end();) {
+    void LinkedList<T>::printList(typename NodeWrapper<T>::const_iterator head,
+                                  typename NodeWrapper<T>::const_iterator tail) {
+        for (auto it = head; it != tail;) {
             std::cout << *it;
             if (++it != end()) std::cout << ", ";
         }

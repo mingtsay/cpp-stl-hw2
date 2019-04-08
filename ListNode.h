@@ -19,7 +19,7 @@ namespace hw2 {
         Ptr next = nullptr;
 
     public:
-        ListNode(T = static_cast<T>(0), Ptr = nullptr); // NOLINT(google-explicit-constructor)
+        ListNode(T = static_cast<T>(0), Ptr = nullptr); // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
         T operator()() const;
 
@@ -51,8 +51,8 @@ namespace hw2 {
     }
 
     template<typename T>
-    typename ListNode<T>::Ptr ListNode<T>::insert(T data) {
-        return new ListNode<T>(data, this);
+    typename ListNode<T>::Ptr ListNode<T>::insert(T value) {
+        return new ListNode<T>(value, this);
     }
 
     template<typename T>

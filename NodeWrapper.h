@@ -17,15 +17,15 @@ namespace hw2 {
         typedef NodeWrapperBase<T, T *, T &> iterator;
         typedef NodeWrapperBase<T, const T *, const T &> const_iterator;
 
-        NodeWrapperBase(ListNode <T> * = nullptr); // NOLINT(google-explicit-constructor)
+        NodeWrapperBase(ListNode <T> * = nullptr); // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
-        NodeWrapperBase(iterator &); // NOLINT(google-explicit-constructor)
+        NodeWrapperBase(const iterator &); // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
-        NodeWrapperBase(const_iterator &); // NOLINT(google-explicit-constructor)
+        NodeWrapperBase(const const_iterator &); // NOLINT(google-explicit-constructor,hicpp-explicit-conversions)
 
         T operator*();
 
-        typename ListNode<T>::Ptr operator->();
+        typename ListNode<T>::Ptr operator->() const;
 
         NodeWrapperBase &operator++();
 
@@ -38,12 +38,12 @@ namespace hw2 {
     NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(ListNode <T> *ptr): node(ptr) {}
 
     template<typename T, typename Pointer, typename Reference>
-    NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(NodeWrapperBase<T, Pointer, Reference>::iterator &wrapper)
-            : node(wrapper.node) {}
+    NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(
+            const NodeWrapperBase<T, Pointer, Reference>::iterator &wrapper): node(wrapper->ptr()) {}
 
     template<typename T, typename Pointer, typename Reference>
     NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(
-            NodeWrapperBase<T, Pointer, Reference>::const_iterator &wrapper): node(wrapper.node) {}
+            const NodeWrapperBase<T, Pointer, Reference>::const_iterator &wrapper): node(wrapper->ptr()) {}
 
     template<typename T, typename Pointer, typename Reference>
     T NodeWrapperBase<T, Pointer, Reference>::operator*() {
@@ -51,7 +51,7 @@ namespace hw2 {
     }
 
     template<typename T, typename Pointer, typename Reference>
-    typename ListNode<T>::Ptr NodeWrapperBase<T, Pointer, Reference>::operator->() {
+    typename ListNode<T>::Ptr NodeWrapperBase<T, Pointer, Reference>::operator->() const {
         return node;
     }
 
