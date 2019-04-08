@@ -27,6 +27,24 @@ namespace hw2 {
 
         Ptr append(T);
     };
+
+    template<typename T>
+    ListNode<T>::ListNode(T, ListNode::Ptr): data(data), next(next) {}
+
+    template<typename T>
+    T ListNode<T>::operator()() const {
+        return data;
+    }
+
+    template<typename T>
+    typename ListNode<T>::Ptr ListNode<T>::nextNode() {
+        return next;
+    }
+
+    template<typename T>
+    typename ListNode<T>::Ptr ListNode<T>::append(T) {
+        return next = new ListNode<T>(data, next);
+    }
 }
 
 

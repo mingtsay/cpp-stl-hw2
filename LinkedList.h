@@ -18,9 +18,9 @@ namespace hw2 {
 
         explicit LinkedList(typename NodeWrapper<T>::iterator);
 
-        NodeWrapper<T> begin();
+        typename NodeWrapper<T>::iterator begin();
 
-        NodeWrapper<T> end();
+        typename NodeWrapper<T>::iterator end();
 
         typename NodeWrapper<T>::iterator insert(typename NodeWrapper<T>::iterator, T);
 
@@ -32,6 +32,63 @@ namespace hw2 {
 
         void printList(typename NodeWrapper<T>::iterator);
     };
+
+    template<typename T>
+    LinkedList<T>::LinkedList():first(NodeWrapper<T>()) {}
+
+    template<typename T>
+    LinkedList<T>::LinkedList(typename NodeWrapper<T>::iterator it) :first(it) {}
+
+    template<typename T>
+    typename NodeWrapper<T>::iterator LinkedList<T>::begin() {
+        return first;
+    }
+
+    template<typename T>
+    typename NodeWrapper<T>::iterator LinkedList<T>::end() {
+        return NodeWrapper<T>();
+    }
+
+    template<typename T>
+    typename NodeWrapper<T>::iterator LinkedList<T>::insert(typename NodeWrapper<T>::iterator wrapper, T data) {
+        if (empty()) return first = new NodeWrapper<T>(new ListNode<T>(data));
+        return new NodeWrapper<T>(begin()->append(data));
+    }
+
+    template<typename T>
+    typename NodeWrapper<T>::iterator LinkedList<T>::erase(typename NodeWrapper<T>::iterator wrapper) {
+        if (wrapper == first) {
+            return first = nullptr;
+        }
+        typename NodeWrapper<T>::iterator next = wrapper;
+        ++next;
+
+        wrapper->data = next->data;
+        wrapper->next = next->next;
+
+        delete next;
+
+        return wrapper;
+    }
+
+    template<typename T>
+    bool LinkedList<T>::empty() {
+        return begin() == end();
+    }
+
+    template<typename T>
+    void LinkedList<T>::printList() {
+        printList(begin());
+    }
+
+    template<typename T>
+    void LinkedList<T>::printList(typename NodeWrapper<T>::iterator first) {
+        for (auto it = first; it != end(); ++it) {
+            if (it != begin()) std::cout << ", ";
+            std::cout << *it;
+        }
+        std::cout << std::endl;
+    }
 }
 
 

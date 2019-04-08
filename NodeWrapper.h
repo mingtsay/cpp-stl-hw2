@@ -25,7 +25,7 @@ namespace hw2 {
 
         T operator*();
 
-        typename hw2::ListNode<T>::Ptr operator->();
+        typename ListNode<T>::Ptr operator->();
 
         NodeWrapperBase &operator++();
 
@@ -34,6 +34,45 @@ namespace hw2 {
         bool operator!=(const NodeWrapperBase &) const;
     };
 
+    template<typename T, typename Pointer, typename Reference>
+    NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(ListNode<T> *ptr):node(ptr) {}
+
+    template<typename T, typename Pointer, typename Reference>
+    NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(NodeWrapperBase<T, Pointer, Reference>::iterator &wrapper)
+            :node(wrapper.node) {}
+
+    template<typename T, typename Pointer, typename Reference>
+    NodeWrapperBase<T, Pointer, Reference>::NodeWrapperBase(
+            NodeWrapperBase<T, Pointer, Reference>::const_iterator &wrapper):node(wrapper.node) {}
+
+    template<typename T, typename Pointer, typename Reference>
+    T NodeWrapperBase<T, Pointer, Reference>::operator*() {
+        return node->operator()();
+    }
+
+    template<typename T, typename Pointer, typename Reference>
+    typename ListNode<T>::Ptr NodeWrapperBase<T, Pointer, Reference>::operator->() {
+        return node;
+    }
+
+    template<typename T, typename Pointer, typename Reference>
+    NodeWrapperBase<T, Pointer, Reference> &NodeWrapperBase<T, Pointer, Reference>::operator++() {
+        node = node->nextNode();
+        return *this;
+    }
+
+    template<typename T, typename Pointer, typename Reference>
+    bool
+    NodeWrapperBase<T, Pointer, Reference>::operator==(const NodeWrapperBase<T, Pointer, Reference> &other) const {
+        return node == other.node;
+    }
+
+    template<typename T, typename Pointer, typename Reference>
+    bool
+    NodeWrapperBase<T, Pointer, Reference>::operator!=(const NodeWrapperBase<T, Pointer, Reference> &other) const {
+        return node != other.node;
+    }
+
     template<typename T>
     class NodeWrapper : public NodeWrapperBase<T, T *, T &> {
     public:
@@ -41,6 +80,12 @@ namespace hw2 {
 
         NodeWrapper(NodeWrapper<T> &);
     };
+
+    template<typename T>
+    NodeWrapper<T>::NodeWrapper(typename ListNode<T>::Ptr ptr):NodeWrapperBase<T, T *, T &>(ptr) {}
+
+    template<typename T>
+    NodeWrapper<T>::NodeWrapper(NodeWrapper<T> &wrapper):NodeWrapperBase<T, T *, T &>(wrapper) {}
 }
 
 
