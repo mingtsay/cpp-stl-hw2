@@ -83,9 +83,9 @@ namespace hw2 {
 
     template<typename T>
     void LinkedList<T>::printList(typename NodeWrapper<T>::iterator &first) {
-        for (auto it = first; it != end(); ++it) {
-            if (it != begin()) std::cout << ", ";
+        for (auto it = first; it != end();) {
             std::cout << *it;
+            if (++it != end()) std::cout << ", ";
         }
         std::cout << std::endl;
     }
