@@ -29,7 +29,7 @@ namespace hw2 {
     };
 
     template<typename T>
-    ListNode<T>::ListNode(T, ListNode::Ptr): data(data), next(next) {}
+    ListNode<T>::ListNode(T data, ListNode::Ptr next): data(data), next(next) {}
 
     template<typename T>
     T ListNode<T>::operator()() const {
