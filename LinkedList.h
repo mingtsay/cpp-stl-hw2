@@ -41,7 +41,7 @@ namespace hw2 {
 
     template<typename T>
     typename NodeWrapper<T>::iterator &LinkedList<T>::begin() {
-        return first;
+        return *(new NodeWrapper<T>(first->ptr()));
     }
 
     template<typename T>
@@ -51,24 +51,15 @@ namespace hw2 {
 
     template<typename T>
     typename NodeWrapper<T>::iterator &LinkedList<T>::insert(typename NodeWrapper<T>::iterator &wrapper, T data) {
-        if (empty()) return first = new NodeWrapper<T>(new ListNode<T>(data));
-        return new NodeWrapper<T>(begin()->append(data));
+        if (empty()) return first = *(new NodeWrapper<T>(new ListNode<T>(data)));
+        if (first == wrapper) return first = *(new NodeWrapper<T>(begin()->insert(data)));
+        return *(new NodeWrapper<T>(begin()->insert(data)));
     }
 
     template<typename T>
     typename NodeWrapper<T>::iterator &LinkedList<T>::erase(typename NodeWrapper<T>::iterator &wrapper) {
-        if (wrapper == first) {
-            return first = nullptr;
-        }
-        typename NodeWrapper<T>::iterator next = wrapper;
-        ++next;
-
-        wrapper->data = next->data;
-        wrapper->next = next->next;
-
-        delete next;
-
-        return wrapper;
+        if (first == wrapper) return first = *(new NodeWrapper<T>(wrapper->erase(first->ptr())));
+        return *(new NodeWrapper<T>(wrapper->erase(first->ptr())));
     }
 
     template<typename T>

@@ -23,17 +23,26 @@ namespace hw2 {
 
         T operator()() const;
 
+        Ptr ptr();
+
         Ptr nextNode();
 
-        Ptr append(T);
+        Ptr insert(T);
+
+        Ptr erase(Ptr);
     };
 
     template<typename T>
-    ListNode<T>::ListNode(T data, ListNode::Ptr next): data(data), next(next) {}
+    ListNode<T>::ListNode(T data, Ptr next): data(data), next(next) {}
 
     template<typename T>
     T ListNode<T>::operator()() const {
         return data;
+    }
+
+    template<typename T>
+    typename ListNode<T>::Ptr ListNode<T>::ptr() {
+        return this;
     }
 
     template<typename T>
@@ -42,8 +51,19 @@ namespace hw2 {
     }
 
     template<typename T>
-    typename ListNode<T>::Ptr ListNode<T>::append(T) {
-        return next = new ListNode<T>(data, next);
+    typename ListNode<T>::Ptr ListNode<T>::insert(T data) {
+        return new ListNode<T>(data, this);
+    }
+
+    template<typename T>
+    typename ListNode<T>::Ptr ListNode<T>::erase(Ptr first) {
+        if (first != this)
+            for (auto it = first; it->next != nullptr;) {
+                if (it->next == this) {
+                    return it->next = next;
+                }
+            }
+        return next;
     }
 }
 

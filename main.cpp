@@ -10,6 +10,11 @@ int main() {
     hw2::LinkedList<int> linkedList(wrapper);
 
     linkedList.printList();
+    linkedList.insert(linkedList.begin(), 5);
+    linkedList.printList();
+    auto pos = std::find<hw2::NodeWrapper<int>::iterator &, int>(linkedList.begin(), linkedList.end(), 10);
+    linkedList.erase(pos);
+    linkedList.printList();
 
     return 0;
 }
